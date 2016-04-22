@@ -30,7 +30,6 @@ public class DaoSupportImpl<T> implements DaoSupport<T> {
     }
 
     protected Session getSession() {
-        //TODO
         return sessionFactory.getCurrentSession();
     }
 
