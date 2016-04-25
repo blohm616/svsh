@@ -39,4 +39,12 @@
 
     <!--异常处理-->
     <bean class="xiezhy.exception.CustomExceptionResolver" ></bean>
+    <!--拦截器-->
+    <mvc:interceptors>
+        <mvc:interceptor>
+            <!--拦截所有的url，包括子url路径-->
+            <mvc:mapping path="/**"/>
+            <bean class="xiezhy.interceptor.LoginInterceptor" />
+        </mvc:interceptor>
+    </mvc:interceptors>
 </beans>
