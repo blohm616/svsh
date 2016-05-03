@@ -4,6 +4,8 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import xiezhy.basic.dao.DaoSupport;
+import xiezhy.basic.entity.Pager;
+import xiezhy.basic.entity.Pagination;
 
 import javax.annotation.Resource;
 import java.lang.reflect.ParameterizedType;
@@ -63,6 +65,10 @@ public class DaoSupportImpl<T> implements DaoSupport<T> {
         return (T) getSession().get(clazz,id);
     }
 
+    /**
+     * hql: FROM User WHERE userName = :userName
+     *      map.put("userName","abc");
+     */
     @Override
     public List<T> getByHql(String hql, Map<String, Object> map) {
         Query query = getSession().createQuery(hql);
@@ -73,5 +79,75 @@ public class DaoSupportImpl<T> implements DaoSupport<T> {
         }
         return query.list();
     }
+
+    /**
+     * sql: SELECT * FROM user WHERE user_name = :name
+     *      map.put("userName","abc");
+     */
+    @Override
+    public List<T> getBySql(String sql, Map<String, Object> map) {
+        Query query = getSession().createSQLQuery(sql);
+        if(map != null && !map.isEmpty()) {
+            for(String name : query.getNamedParameters()) {
+                query.setParameter(name , map.get(name));
+            }
+        }
+        return query.list();
+    }
+
+    /**
+     *  pageNo = 1   	pageSize = 3
+        start = (pageNo - 1) * pageSize
+        end = pageNo * pageSize
+     */
+
+    @Override
+    public List<T> getByHql(String hql, int start, int pageSize, Map<String, Object> map) {
+
+        Query query = getSession().createQuery(hql);
+        if(map != null && !map.isEmpty()) {
+            for(String name : query.getNamedParameters()) {
+                query.setParameter(name , map.get(name));
+            }
+        }
+
+        return query.setFirstResult(start).setMaxResults(pageSize).list();
+    }
+
+    @Override
+    public List<T> getBySql(String sql, int start, int pageSize, Map<String, Object> map) {
+
+        Query query = getSession().createSQLQuery(sql);
+        if(map != null && !map.isEmpty()) {
+            for(String name : query.getNamedParameters()) {
+                query.setParameter(name , map.get(name));
+            }
+        }
+
+        return query.setFirstResult(start).setMaxResults(pageSize).list();
+    }
+
+    @Override
+    public int getCountByHql(String hql,Map<String,Object> map) {
+        Query query = getSession().createQuery(hql);
+        if(map != null && !map.isEmpty()) {
+            for(String name : query.getNamedParameters()) {
+                query.setParameter(name , map.get(name));
+            }
+        }
+        return (int) query.uniqueResult();
+    }
+
+    @Override
+    public int getCountBySql(String sql,Map<String,Object> map) {
+        Query query = getSession().createSQLQuery(sql);
+        if(map != null && !map.isEmpty()) {
+            for(String name : query.getNamedParameters()) {
+                query.setParameter(name , map.get(name));
+            }
+        }
+        return (int) query.uniqueResult();
+    }
+
 
 }

@@ -1,5 +1,8 @@
 package xiezhy.basic.dao;
 
+import xiezhy.basic.entity.Pager;
+import xiezhy.basic.entity.Pagination;
+
 import java.util.List;
 import java.util.Map;
 
@@ -36,7 +39,20 @@ public interface DaoSupport<T> {
     T getById(Long id);
 
     /**
-     * hql查询
+     * 查询
      */
     List<T> getByHql(String hql,Map<String,Object> map);
+    List<T> getBySql(String sql,Map<String,Object> map);
+    List<T> getByHql(String hql,int start,int pageSize,Map<String,Object> map);
+    List<T> getBySql(String sql,int start,int pageSize,Map<String,Object> map);
+
+
+
+    /**
+     * count查询
+     */
+    int getCountByHql(String hql,Map<String,Object> map);
+    int getCountBySql(String sql,Map<String,Object> map);
+
+
 }

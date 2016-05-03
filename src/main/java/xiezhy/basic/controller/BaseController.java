@@ -33,6 +33,27 @@ public class BaseController {
             'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W',
             'X', 'Y', 'Z', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' };
 
+    /**
+     *
+         //点击换验证码
+         function changeImg() {
+         var imgSrc = $("#vcodeImg");
+         var src = imgSrc.attr("src");
+         imgSrc.attr("src", chgUrl(src));
+         }
+         //时间戳
+         //为了使每次生成图片不一致，即不让浏览器读缓存，所以需要加上时间戳
+         function chgUrl(url) {
+         var timestamp = (new Date()).valueOf();
+         url = url.substring(0, 17);
+         if ((url.indexOf("&") >= 0)) {
+         url = url + "×tamp=" + timestamp;
+         } else {
+         url = url + "?timestamp=" + timestamp;
+         }
+         return url;
+         }
+     */
     @RequestMapping("code")
     public void code(HttpServletRequest request, HttpServletResponse response)
                 throws Exception {
